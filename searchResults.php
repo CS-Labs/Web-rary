@@ -20,22 +20,52 @@
 		<div class="col-lg-2 sidebar" id="left-sidebar"></div>
 		<div class="col-lg-8" id="main-panel">
 			<p> 
-			<?php 
+			<?php
+				require("scripts/connect.php"); 
 				if($searchSelect == 'author') {
 					echo "Searching by Author.";
 				} else if($searchSelect == 'title') {
 					echo "Searching by Title";
 				} else {
 					echo "Searching by ISBN";
+					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = \"". $searchString . "\" AND Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors;";
 				}
 
 				echo "<br> Searching for: " . $searchString;
+ 
+    			$result = $conn->query($searchQuery);
+	
+    			$table = "<h2>Results</h2>
+  					 <p>Click on a row to view more information about a book.</p> 
+  					 <table class=\"table table-hover table-bordered\"> 
+    				   <thead>
+     				   <tr>
+        	 		  <th>Title</th>
+        	 		  <th>Author</th>
+      		 	       </tr>
+    				  </thead>
+    				  </thead>
+    				  <tbody>";
+
+
+    			while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    			$table .=  "<tr>
+    					<td>". $row["title"]  . "</td>". "<td>" . $row["name"] . "</td></tr>";
+     			}
+
+    			$table .= "</tbody></table>";
+
+    			echo $table;
 
 			?> 
+
 			</p>
+
 		</div>
 		<div class="col-lg-2 sidebar" id="right-sidebar">
-		
+
+		  </div>
+
 	</body>
 
 </html>

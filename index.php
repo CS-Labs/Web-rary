@@ -24,8 +24,8 @@
 			    <div class="row">
   	<div class="col-sm-12 book-info" ><b>This Years Most Popular Author(s):
   	<?php 
-  	require("scripts/connect.php");
-	$mostPopAuthQuery = "
+  		require("scripts/connect.php");
+		$mostPopAuthQuery = "
     SELECT DISTINCT name 
     FROM (SELECT ISBN 
         FROM Books 
@@ -37,10 +37,10 @@
                                                                                             FROM Authors, WrittenBy 
                                                                                             WHERE id=authorID) as a3;";
  
-    $result = $conn->query($mostPopAuthQuery);
-    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    	echo  $row["name"] . ", ";
-    }
+    	$result = $conn->query($mostPopAuthQuery);
+    	while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    		echo  $row["name"] . ", ";
+    	}
 	?>
 
   	</b> </div>
@@ -48,8 +48,8 @@
   				    <div class="row">
   	<div class="col-sm-12 book-info" ><b>Current Most Popular Genre:
   	<?php 
-  	require("scripts/connect.php");
-	$mostPopGenreQuery = "
+  		require("scripts/connect.php");
+		$mostPopGenreQuery = "
     SELECT genre 
     FROM (SELECT genre, COUNT(genre) cnt 
           FROM Books 
@@ -58,10 +58,10 @@
                                              FROM Books 
                                              GROUP By genre) as a1))as a2;";
  
-    $result = $conn->query($mostPopGenreQuery);
-    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    	echo  $row["genre"];
-    }
+    	$result = $conn->query($mostPopGenreQuery);
+    	while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    		echo  $row["genre"];
+    	}
 	?>
 
   	</b> </div>
@@ -69,13 +69,13 @@
   	  				    <div class="row">
   	<div class="col-sm-12 book-info" ><b>List of Genres Offered:
 	<?php 
-  	require("scripts/connect.php");
-	$getGenresQuery = "SELECT DISTINCT genre FROM Books;";
+  		require("scripts/connect.php");
+		$getGenresQuery = "SELECT DISTINCT genre FROM Books;";
  
-    $result = $conn->query($getGenresQuery);
-    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    	echo  $row["genre"]  . ", ";
-    }
+    	$result = $conn->query($getGenresQuery);
+    	while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    		echo  $row["genre"]  . ", ";
+    	}
 	?>
 
   	</b> </div>
@@ -90,6 +90,7 @@
 				<option value="title">Title</option>
 				<option value="author">Author</option>
 				<option value="isbn">ISBN</option>
+				<option value="genre">genre</option>
 			</select>
 			<input type="text" class="form-control" name="search-box" id="search-box">
 			<button type="submit" class="btn" id="search-button">Search</button>
