@@ -1,0 +1,22 @@
+.sidebar {
+	background-color: #4880A8;
+	height: 100%;
+}
+
+#header {
+
+}
+
+#title {
+	margin-left: 70px;
+}
+
+#title span {
+	font-size: 14px;
+	margin-left: 10px;
+	color: #004a7f;
+}
+
+#search-box, #search-button {
+	margin-top: 10px;
+}
