@@ -35,7 +35,15 @@
           <div class="col-sm-12 text-center book-info" id = "emptyRow" "></div>
   <div class="col-sm-12 text-center book-info"  ><b>Synopsis:</b> </div>
   </div>
-  <button type="button" class="btn btn-primary">Rent</button>
+        <div class="row">
+          <div class="col-sm-12 text-center book-info" id = "emptyRow" "></div>
+   <div class="col-sm-4 text-center"  ><b></b> </div>
+         
+  <button type="button" class="col-sm-4 col-centered btn btn-primary">Rent Book</button>
+    <div class="col-sm-4 text-center"  ><b></b> </div>
+
+  </div>
+
     </div>
 		<div class="col-lg-2 sidebar" id="right-sidebar">
 		</div>

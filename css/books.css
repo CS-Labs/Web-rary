@@ -1,3 +1,7 @@
 .book-info {
-	background-color:lavender
+	background-color:lavender;
+}
+
+#emptyRow {
+	min-height: 50px;
 }
