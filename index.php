@@ -46,10 +46,39 @@
   	</b> </div>
   	</div>
   				    <div class="row">
-  	<div class="col-sm-12 book-info" ><b>Current Most Popular Genre:</b> </div>
+  	<div class="col-sm-12 book-info" ><b>Current Most Popular Genre:
+  	<?php 
+  	require("scripts/connect.php");
+	$mostPopGenreQuery = "
+    SELECT genre 
+    FROM (SELECT genre, COUNT(genre) cnt 
+          FROM Books 
+          GROUP BY genre HAVING cnt = (SELECT MAX(cnt) 
+                                       FROM (SELECT COUNT(genre) as cnt 
+                                             FROM Books 
+                                             GROUP By genre) as a1))as a2;";
+ 
+    $result = $conn->query($mostPopGenreQuery);
+    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    	echo  $row["genre"];
+    }
+	?>
+
+  	</b> </div>
   	</div>
   	  				    <div class="row">
-  	<div class="col-sm-12 book-info" ><b>List of Genres Offered:</b> </div>
+  	<div class="col-sm-12 book-info" ><b>List of Genres Offered:
+	<?php 
+  	require("scripts/connect.php");
+	$getGenresQuery = "SELECT DISTINCT genre FROM Books;";
+ 
+    $result = $conn->query($getGenresQuery);
+    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    	echo  $row["genre"]  . ", ";
+    }
+	?>
+
+  	</b> </div>
   	</div>
 
 
