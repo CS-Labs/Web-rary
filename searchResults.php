@@ -24,8 +24,10 @@
 				require("scripts/connect.php"); 
 				if($searchSelect == 'author') {
 					echo "Searching by Author.";
+					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE name = LIKE '%" . $searchString . "%'";
 				} else if($searchSelect == 'title') {
 					echo "Searching by Title";
+					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE title LIKE '%" . $searchString . "%'";
 				} else {
 					echo "Searching by ISBN";
 					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = \"". $searchString . "\" AND Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors;";
@@ -48,7 +50,7 @@
     				  <tbody>";
 
 
-    			while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    			while($row = $result->fetch()) {
     			$table .=  "<tr>
     					<td>". $row["title"]  . "</td>". "<td>" . $row["name"] . "</td></tr>";
      			}
