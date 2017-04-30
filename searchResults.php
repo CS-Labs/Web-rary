@@ -1,7 +1,7 @@
 <?php 
 	require("scripts/connect.php");
-	if(isset($_POST['search-box'])) $searchString = $_POST['search-box'];
-	if(isset($_POST['search-select'])) $searchSelect = $_POST['search-select'];
+	if(isset($_GET['search-box'])) $searchString = $_GET['search-box'];
+	if(isset($_GET['search-select'])) $searchSelect = $_GET['search-select'];
 ?>
 
 <html>
@@ -24,13 +24,16 @@
 				require("scripts/connect.php"); 
 				if($searchSelect == 'author') {
 					echo "Searching by Author.";
-					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE name = LIKE '%" . $searchString . "%'";
+					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE name LIKE '%" . $searchString . "%'";
 				} else if($searchSelect == 'title') {
 					echo "Searching by Title";
 					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE title LIKE '%" . $searchString . "%'";
-				} else {
+				} else if($searchSelect == 'author') {
 					echo "Searching by ISBN";
 					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = \"". $searchString . "\" AND Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors;";
+				} else {
+					echo "Searching by Genre";
+					// $searchQuery = "select title, name from Books where genre = ".$searchString;
 				}
 
 				echo "<br> Searching for: " . $searchString;

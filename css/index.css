@@ -27,6 +27,13 @@
 }
 
 .book-info {
-	background-color:lavender;
+}
+
+ul {
+	list-style-type: none;
+}
+
+li {
+	font-size: 20px;
 }
 
