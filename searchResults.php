@@ -74,7 +74,7 @@
 	$('.pagination').attr('total-items', jsResults.length);
 	for(var i = 0; i < jsResults.length; i++) {
 		if(i < 100) {
-			$('#results tbody').append('<tr><td>'+jsResults[i].title+'</td><td>'+jsResults[i].name+'</td></tr>');
+			$('#results tbody').append('<tr><td>'+jsResults[i].title+'</td><td><a href="searchResults.php?search-select=author&search-box='+jsResults[i].name+'">'+jsResults[i].name+'</a></td></tr>');
 		}
 		
 		if(i % 100 == 0) {
@@ -85,7 +85,7 @@
 		var start = $(this).attr('value') * 100;
 		$('#results tbody').empty();
 		for(var i = start; i < (start + 100) && i < jsResults.length; i++) {
-			$('#results tbody').append('<tr><td>'+jsResults[i].title+'</td><td>'+jsResults[i].name+'</td></tr>');
+			$('#results tbody').append('<tr><td>'+jsResults[i].title+'</td><td><a href="searchResults.php?search-select=author&search-box='+jsResults[i].name+'">'+jsResults[i].name+'</a></td></tr>');
 		}
 	})
 
