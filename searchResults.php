@@ -23,13 +23,13 @@
 			<?php
 				require("scripts/connect.php"); 
 				if($searchSelect == 'author') {
-					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE name LIKE '%" . $searchString . "%'";
+					$searchQuery = "SELECT title, name, isbn FROM (SELECT title, Books.ISBN as isbn, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE name LIKE '%" . $searchString . "%'";
 				} else if($searchSelect == 'title') {
-					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE title LIKE '%" . $searchString . "%'";
+					$searchQuery = "SELECT title, name, isbn FROM (SELECT title, Books.ISBN as isbn, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE title LIKE '%" . $searchString . "%'";
 				} else if($searchSelect == 'author') {
-					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = \"". $searchString . "\" AND Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors;";
+					$searchQuery = "SELECT title, name, isbn FROM (SELECT title, Books.ISBN as isbn, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = \"". $searchString . "\" AND Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors;";
 				} else {
-					$searchQuery = "select title, name from (select title, authorID as id from Books, WrittenBy where genre = '".$searchString."' and Books.ISBN = WrittenBy.ISBN) as a1 natural join Authors";
+					$searchQuery = "select title, name, isbn from (select title, Books.ISBN as isbn, authorID as id from Books, WrittenBy where genre = '".$searchString."' and Books.ISBN = WrittenBy.ISBN) as a1 natural join Authors";
 				}
  
     			$result = $conn->query($searchQuery);
@@ -70,11 +70,10 @@
 	<?php 
 		echo "var jsResults = ".json_encode($phpResults).";\n";
 	?>
-	var pageNum;
 	$('.pagination').attr('total-items', jsResults.length);
 	for(var i = 0; i < jsResults.length; i++) {
 		if(i < 100) {
-			$('#results tbody').append('<tr><td>'+jsResults[i].title+'</td><td><a href="searchResults.php?search-select=author&search-box='+jsResults[i].name+'">'+jsResults[i].name+'</a></td></tr>');
+			$('#results tbody').append('<tr><td><a isbn='+jsResults[i].isbn+' href=#>'+jsResults[i].title+'</a></td><td><a href="searchResults.php?search-select=author&search-box='+jsResults[i].name+'">'+jsResults[i].name+'</a></td></tr>');
 		}
 		
 		if(i % 100 == 0) {
