@@ -23,49 +23,40 @@
 			<?php
 				require("scripts/connect.php"); 
 				if($searchSelect == 'author') {
-					echo "Searching by Author.";
 					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE name LIKE '%" . $searchString . "%'";
 				} else if($searchSelect == 'title') {
-					echo "Searching by Title";
 					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE title LIKE '%" . $searchString . "%'";
 				} else if($searchSelect == 'author') {
-					echo "Searching by ISBN";
 					$searchQuery = "SELECT title, name FROM (SELECT title, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = \"". $searchString . "\" AND Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors;";
 				} else {
-					echo "Searching by Genre";
-					// $searchQuery = "select title, name from Books where genre = ".$searchString;
+					$searchQuery = "select title, name from (select title, authorID as id from Books, WrittenBy where genre = '".$searchString."' and Books.ISBN = WrittenBy.ISBN) as a1 natural join Authors";
 				}
-
-				echo "<br> Searching for: " . $searchString;
  
     			$result = $conn->query($searchQuery);
-	
-    			$table = "<h2>Results</h2>
-  					 <p>Click on a row to view more information about a book.</p> 
-  					 <table class=\"table table-hover table-bordered\"> 
-    				   <thead>
-     				   <tr>
-        	 		  <th>Title</th>
-        	 		  <th>Author</th>
-      		 	       </tr>
-    				  </thead>
-    				  </thead>
-    				  <tbody>";
-
-
+    			$phpResults = array();
     			while($row = $result->fetch()) {
-    			$table .=  "<tr>
-    					<td>". $row["title"]  . "</td>". "<td>" . $row["name"] . "</td></tr>";
+    				array_push($phpResults, $row);
      			}
-
-    			$table .= "</tbody></table>";
-
-    			echo $table;
-
 			?> 
-
-			</p>
-
+			<h2>Results</h2>
+			<div class="col-lg-6"> 
+				<p>Click on a row to view more information about a book.</p>
+			</div>
+			<div class="col-lg-6" style="text-align: right">
+				<ul class="pagination pagination-sm">
+				</ul>
+			</div>
+			<table class="table table-hover table-bordered" id="results">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Author</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			
 		</div>
 		<div class="col-lg-2 sidebar" id="right-sidebar">
 
@@ -74,3 +65,28 @@
 	</body>
 
 </html>
+
+<script type='text/javascript'>
+	<?php 
+		echo "var jsResults = ".json_encode($phpResults).";\n";
+	?>
+	var pageNum;
+	$('.pagination').attr('total-items', jsResults.length);
+	for(var i = 0; i < jsResults.length; i++) {
+		if(i < 100) {
+			$('#results tbody').append('<tr><td>'+jsResults[i].title+'</td><td>'+jsResults[i].name+'</td></tr>');
+		}
+		
+		if(i % 100 == 0) {
+			$('.pagination-sm').append('<li><a value='+ (i / 100) +' href="#">'+ (i / 100 + 1) +'</a></li>');
+		}
+	}
+	$(document).on('click', '.pagination>li>a', function() {
+		var start = $(this).attr('value') * 100;
+		$('#results tbody').empty();
+		for(var i = start; i < (start + 100) && i < jsResults.length; i++) {
+			$('#results tbody').append('<tr><td>'+jsResults[i].title+'</td><td>'+jsResults[i].name+'</td></tr>');
+		}
+	})
+
+</script>
