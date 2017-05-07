@@ -11,7 +11,7 @@
 	<body bgcolor=white>
 	<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="nav navbar-nav navbar-right">
-			<li><a data-toggle="modal" data-target="#mySignUpModal" href="#">Sign-Up</a></li>
+			<li><a href="signUp.php">Sign-Up</a></li>
 			<li><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>
 		</ul>
 	</div>
@@ -148,7 +148,7 @@
                       <input type="password" class="form-control"
                           id="myPassword" placeholder="Password"/>
                   </div>
-                  <button type="submit" class="btn btn-default">Log-In</button>
+                  <button type="submit" id="log-in" class="btn btn-default">Log-In</button>
                 </form>
                 
             
@@ -173,3 +173,18 @@
 
 
 </html>
+
+<script>
+  $('#log-in').click(function() {
+    var userName = $('#myUserName').val();
+    var pass = $('#myPassword').val();
+    $.ajax({
+      type: 'post',
+      url: 'scripts/authenticate.php',
+      data: {'userName': userName, 'pass': pass},
+      success: function(data) {
+        
+      }
+    })
+  })
+</script>

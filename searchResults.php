@@ -26,7 +26,7 @@
 					$searchQuery = "SELECT title, name, isbn FROM (SELECT title, Books.ISBN as isbn, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE name LIKE '%" . $searchString . "%'";
 				} else if($searchSelect == 'title') {
 					$searchQuery = "SELECT title, name, isbn FROM (SELECT title, Books.ISBN as isbn, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors WHERE title LIKE '%" . $searchString . "%'";
-				} else if($searchSelect == 'author') {
+				} else if($searchSelect == 'isbn') {
 					$searchQuery = "SELECT title, name, isbn FROM (SELECT title, Books.ISBN as isbn, authorID as id FROM Books, WrittenBy WHERE Books.ISBN = \"". $searchString . "\" AND Books.ISBN = WrittenBy.ISBN) as a1 NATURAL JOIN Authors;";
 				} else {
 					$searchQuery = "select title, name, isbn from (select title, Books.ISBN as isbn, authorID as id from Books, WrittenBy where genre = '".$searchString."' and Books.ISBN = WrittenBy.ISBN) as a1 natural join Authors";
@@ -84,7 +84,7 @@
 		var start = $(this).attr('value') * 100;
 		$('#results tbody').empty();
 		for(var i = start; i < (start + 100) && i < jsResults.length; i++) {
-			$('#results tbody').append('<tr><td>'+jsResults[i].title+'</td><td><a href="searchResults.php?search-select=author&search-box='+jsResults[i].name+'">'+jsResults[i].name+'</a></td></tr>');
+			$('#results tbody').append('<tr><td><a isbn='+jsResults[i].isbn+' href=#>'+jsResults[i].title+'</td><td><a href="searchResults.php?search-select=author&search-box='+jsResults[i].name+'">'+jsResults[i].name+'</a></td></tr>');
 		}
 	})
 
