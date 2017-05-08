@@ -41,37 +41,43 @@ error_reporting(E_ALL);
 		</div>
 		<div class="col-lg-2 sidebar" id="left-sidebar"></div>
 		<div class="col-lg-8" id="main-panel">
-    <div class="row">
-  <div class="col-sm-4 book-info" ><b>Title: <?php echo $book['title']; ?></b> </div>
-  <div class="col-sm-4 book-info" ><b>Author: <?php echo $book['author']; ?></b> </div>
-  <div class="col-sm-4 book-info" ><b>Publisher: <?php echo $book['publisher']; ?></b> </div>
-  </div>
-      <div class="row">
-  <div class="col-sm-4 book-info"  ><b>Genre: <?php echo $book['genre']; ?></b> </div>
-  <div class="col-sm-4 book-info"  ><b>Date of Publication: <?php echo $book['pubDate']; ?></b> </div>
-  <div class="col-sm-4 book-info"  ><b>ISBN: <?php echo $isbn; ?></b> </div>
-  </div>
-        <div class="row">
-          <div class="col-sm-12 text-center book-info" id = "emptyRow" "></div>
-  <div class="col-sm-12 text-center book-info"  ><b>Synopsis:</b> 
-  <?php echo $book['synopsis']; ?>
+  <div class="row book-info">
+	  <div class="col-sm-4" ><b>Title: <?php echo $book['title']; ?></b> </div>
+	  <div class="col-sm-4" ><b>Author: <?php echo $book['author']; ?></b> </div>
+	  <div class="col-sm-4" ><b>Publisher: <?php echo $book['publisher']; ?></b> </div>
+	  
+	  <div class="col-sm-4"  ><b>Genre: <?php echo $book['genre']; ?></b> </div>
+	  <div class="col-sm-4"  ><b>Date of Publication: <?php echo $book['pubDate']; ?></b> </div>
+	  <div class="col-sm-4"  ><b>ISBN: <?php echo $isbn; ?></b> </div>
+	  
+	  <div class="col-sm-12 text-center" id = "emptyRow" "></div>
+	  <div class="col-sm-12 text-center"  ><b>Synopsis:</b> 
+	  <?php echo $book['synopsis']; ?>
   </div>
   </div>
         <div class="row">
           <div class="col-sm-12 text-center book-info" id = "emptyRow" "></div>
-   <div class="col-sm-4 text-center"  ><b></b> </div>
-         
-  <button type="button" class="col-sm-4 col-centered btn btn-primary">Rent Book</button>
+   
+  <div class="col-lg-12" style="text-align:center">       
+  	<button type="button" class="btn btn-primary">Rent Book</button>
+  </div>
     <div class="col-sm-4"> </div>
   <div class="col-lg-12">
 	  <div class="col-lg-2"></div>
 
 	  <div class="col-lg-8" style="text-align:center">
 	  	<h2>Reviews For This Book</h2>
+	  	<div class="form-group">
+		  <label for="user-review">Write Your Own Review:</label>
+		  <textarea class="form-control" rows="10" id="user-review"></textarea>
+		  <button class="btn btn-primary">Submit</button>
+		</div>
 	  	<?php
 	  		for($i = 0; $i < count($reviews); $i++) {
-	  			echo "<div><h4>Date Posted: </h4>".$reviews[$i]['datePosted']."</div>";
+	  			echo "<div class='col-lg-6 review-text' style='text-align:left'><h4 class='review-headers'>User: </h4>".$reviews[$i]['username']."</div>";
+	  			echo "<div class='col-lg-6 review-text' style='text-align:right'><h4 class='review-headers'>Date Posted: </h4>".$reviews[$i]['datePosted']."</div>";
 	  			echo "<div class='col-lg-12'>".$reviews[$i]['contents']."</div>";
+	  			echo "<div class='col-lg-12 review-spacer'></div>";
 	  		}
 	  	?>
 	  </div>

@@ -5,3 +5,16 @@
 #emptyRow {
 	min-height: 50px;
 }
+
+.review-headers {
+	display: inline;
+	color: blue;
+}
+
+.review-text {
+	color: red;
+}
+
+.review-spacer {
+	height: 40px;
+}
