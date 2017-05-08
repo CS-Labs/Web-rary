@@ -11,6 +11,7 @@
 	<body bgcolor=white>
 	<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="nav navbar-nav navbar-right">
+      <li id = 'accountInfoBtn' style="display:none;"><a href="accountInfo.php">Account-Info</a></li>
 			<li><a href="signUp.php">Sign-Up</a></li>
 			<li id = 'LoginBtn'><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>
 		</ul>
@@ -147,7 +148,6 @@
   var loggedIn; //Global.
   $(document).ready(function(){
     loggedIn = false;
-    console.log('Setting start logged in to false');
   })
 
   $(document).on('click', '#LoginBtn', function (e) {
@@ -156,7 +156,7 @@
       loggedIn = false;
       $('#LoginBtn a').text('Login');
       $('#LoginBtn a').attr('data-target','#myLoginModal');
-
+      $('#accountInfoBtn').attr('style', 'display:none;');
     }
   })
 
@@ -171,8 +171,6 @@
   });
 
   $(document).on('click', '#log-in', function(e) {
-    console.log('Listener triggered');
-    console.log('Checking status');
      $('#LoginBtn a').text('Login');
       e.preventDefault();
       $('#error-info').empty();
@@ -184,11 +182,7 @@
         data: {'userName': userName, 'pass': pass},
 
         success: function(data) {
-          console.log(data);
           var authData = JSON.parse(data);
-          console.log(authData);
-          console.log(authData[0]);
-          console.log(authData[1]);
           if(authData[0] == "")
           {
             $('#error-info').append("<font color='red'><b>INVALID USERNAME</b></font>");
@@ -203,6 +197,7 @@
            $('#LoginBtn a').text('Logout');
            $('#LoginBtn a').attr('data-target','#logOutMessageModal');
            $('#myLoginModal').modal('hide');
+           $('#accountInfoBtn').attr('style', '');
           }
         }
 
