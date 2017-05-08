@@ -11,8 +11,9 @@
 	<body bgcolor=white>
 	<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="nav navbar-nav navbar-right">
+      <li id = 'accountInfoBtn' style="display:none;"><a href="accountInfo.php">Account-Info</a></li>
 			<li><a href="signUp.php">Sign-Up</a></li>
-			<li><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>
+			<li id = 'LoginBtn'><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>
 		</ul>
 	</div>
 	
@@ -78,19 +79,15 @@
 		</form>
 		</div>
 
-
- 
-
-
-		 <!-- Modal -->
-  <div class="modal fade" id="myLoginModal" role="dialog">
+ <!-- Modal -->
+  <div class="modal fade" id="logOutMessageModal" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Enter Your Credentials</h4>
+          <h4 class="modal-title">You have been succesfully logged out.</h4>
         </div>
 
             <!-- Modal Body -->
@@ -116,75 +113,77 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <div class="modal-body">
+          <p>Have a nice day!</p>
         </div>
       </div>
       
-    	</div>
-  		</div>
+    </div>
+  </div>
 
 
-		 <!-- Modal -->
-  <div class="modal fade" id="myLoginModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Enter Your Credentials</h4>
-        </div>
-
-            <!-- Modal Body -->
-            <div class="modal-body">
-                
-                <form role="form">
-                  <div class="form-group">
-                    <label for="myUserName">Username</label>
-                      <input type="Username" class="form-control"
-                      id="myUserName" placeholder="Enter Username"/>
-                  </div>
-                  <div class="form-group">
-                    <label for="myPassword">Password</label>
-                      <input type="password" class="form-control"
-                          id="myPassword" placeholder="Password"/>
-                  </div>
-                  <button id="log-in" class="btn btn-default">Log-In</button>
-                </form>
-                
-            
-            </div>
-
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    	</div>
-  		</div>
-
-
-  
-	</div>
 
 	</body>
 
-
 <script>
-  $(document).on('click', '#log-in', function(e) {
-    e.preventDefault();
-    console.log("clicked");
-    var userName = $('#myUserName').val();
-    var pass = $('#myPassword').val();
-    // $.ajax({
-    //   type: 'post',
-    //   url: 'scripts/authenticate.php',
-    //   data: {'userName': userName, 'pass': pass},
-    //   success: function(data) {
-
-    //   }
-    // })
+  var loggedIn; //Global.
+  $(document).ready(function(){
+    loggedIn = false;
   })
+
+  $(document).on('click', '#LoginBtn', function (e) {
+    if(loggedIn)
+    {
+      loggedIn = false;
+      $('#LoginBtn a').text('Login');
+      $('#LoginBtn a').attr('data-target','#myLoginModal');
+      $('#accountInfoBtn').attr('style', 'display:none;');
+    }
+  })
+
+  $(function(){
+      $('#logOutMessageModal').on('show.bs.modal', function(){
+          var myModal = $(this);
+          clearTimeout(myModal.data('hideInterval'));
+          myModal.data('hideInterval', setTimeout(function(){
+              myModal.modal('hide');
+          }, 2000));
+      });
+  });
+
+  $(document).on('click', '#log-in', function(e) {
+     $('#LoginBtn a').text('Login');
+      e.preventDefault();
+      $('#error-info').empty();
+      var userName = $('#myUserName').val();
+      var pass = $('#myPassword').val();
+      $.ajax({
+        type: 'post',
+        url: 'scripts/authenticate.php',
+        data: {'userName': userName, 'pass': pass},
+
+        success: function(data) {
+          var authData = JSON.parse(data);
+          if(authData[0] == "")
+          {
+            $('#error-info').append("<font color='red'><b>INVALID USERNAME</b></font>");
+          }
+          else if (authData[1] == "")
+          {
+            $('#error-info').append("<font color='red'><b>INVALID PASSWORD</b></font>");
+          }
+          else
+          {
+           loggedIn = true;
+           $('#LoginBtn a').text('Logout');
+           $('#LoginBtn a').attr('data-target','#logOutMessageModal');
+           $('#myLoginModal').modal('hide');
+           $('#accountInfoBtn').attr('style', '');
+          }
+        }
+
+      })
+  });
 </script>
 
 </html>

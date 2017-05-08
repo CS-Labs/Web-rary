@@ -31,7 +31,7 @@ error_reporting(E_ALL);
 	<body bgcolor=white>
 	<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="nav navbar-nav navbar-right">
-			<li><a data-toggle="modal" data-target="#mySignUpModal"href="#">Sign-Up</a></li>
+			<li><a data-toggle="modal" data-target="#mySignUpModal" href="#">Sign-Up</a></li>
 			<li><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>
 		</ul>
 	</div>
