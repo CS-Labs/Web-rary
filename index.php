@@ -107,7 +107,7 @@
                       <input type="password" class="form-control"
                           id="myPassword" placeholder="Password"/>
                   </div>
-                  <button type="submit" class="btn btn-default">Log-In</button>
+                  <button id="log-in" class="btn btn-default">Log-In</button>
                 </form>
                 
             
@@ -148,7 +148,7 @@
                       <input type="password" class="form-control"
                           id="myPassword" placeholder="Password"/>
                   </div>
-                  <button type="submit" id="log-in" class="btn btn-default">Log-In</button>
+                  <button id="log-in" class="btn btn-default">Log-In</button>
                 </form>
                 
             
@@ -170,21 +170,22 @@
 	</body>
 
 
+<script>
+  $(document).on('click', '#log-in', function(e) {
+    e.preventDefault();
+    console.log("clicked");
+    var userName = $('#myUserName').val();
+    var pass = $('#myPassword').val();
+    // $.ajax({
+    //   type: 'post',
+    //   url: 'scripts/authenticate.php',
+    //   data: {'userName': userName, 'pass': pass},
+    //   success: function(data) {
 
+    //   }
+    // })
+  })
+</script>
 
 </html>
 
-<script>
-  $('#log-in').click(function() {
-    var userName = $('#myUserName').val();
-    var pass = $('#myPassword').val();
-    $.ajax({
-      type: 'post',
-      url: 'scripts/authenticate.php',
-      data: {'userName': userName, 'pass': pass},
-      success: function(data) {
-        
-      }
-    })
-  })
-</script>
