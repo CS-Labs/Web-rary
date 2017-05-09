@@ -14,7 +14,7 @@ error_reporting(E_ALL);
 	$book = $query->fetch();
 
 	$reviews = array();
-	$query = $conn->prepare("select contents, datePosted, username from Reviews join BookReviews on BookReviews.reviewID = Reviews.id and BookReviews.ISBN = ? natural join UserReview join Users on UserReview.userID = Users.id");
+	$query = $conn->prepare("select contents, datePosted, username from Reviews join BookReviews on BookReviews.reviewID = Reviews.id and BookReviews.ISBN = ? natural join UserReview join Users on UserReview.userID = Users.id order by datePosted desc");
 	$query->bindParam(1, $isbn);
 	$query->execute();
 	$reviews = $query->fetchAll();
@@ -104,7 +104,7 @@ error_reporting(E_ALL);
 			var today = new Date();
 			var year = today.getFullYear();
 			//the weird looking code with slice below adds 0 before number if it's single digit
-			var day = ('0' + today.getDay()).slice(-2);
+			var day = ('0' + today.getDate()).slice(-2);
 			var month = ('0' + (today.getMonth()+1)).slice(-2);
 			today = year + '-' + month + '-' + day;
 			$.ajax({
@@ -112,8 +112,9 @@ error_reporting(E_ALL);
 				url: 'scripts/addReview.php',
 				data: {'isbn': isbn, 'contents': contents},
 				success: function(data) {
+					console.log(data);
 					$('#user-review').val('');
-					$('#reviews-container').prepend('<div class="col-lg-6 review-text left"><h4 class="inline-headers">User: </h4>'+$_SESSION['username']+'</div><div class="col-lg-6 review-text right"><h4 class="inline-headers">Date Posted: </h4>'+today+'</div><div class="col-lg-12">'+contents+'</div><div class="col-lg-12 review-spacer"></div>');
+					$('#reviews-container').prepend('<div class="col-lg-6 review-text left"><h4 class="inline-headers">User: </h4><?php echo $_SESSION['username']; ?></div><div class="col-lg-6 review-text right"><h4 class="inline-headers">Date Posted: </h4>'+today+'</div><div class="col-lg-12">'+contents+'</div><div class="col-lg-12 review-spacer"></div>');
 				}
 			})
 		});
