@@ -3,8 +3,8 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 	require("connect.php"); 
-	if(isset($_POST['userName'])) $userName = $_POST['userName'];
-	else $userName = '';
+	$userName = $_POST['userName'];
+	$_SESSION['username'] = $username;
 	if(isset($_POST['pass'])) $pass = $_POST['pass'];
 	else $pass = '';
 

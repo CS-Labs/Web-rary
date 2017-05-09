@@ -2,7 +2,9 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+	session_start();
 	require('scripts/connect.php');
+	// require('scripts/authenticate.php');
 	if(isset($_GET['isbn'])) $isbn = $_GET['isbn'];
 	else $isbn = '';
 
@@ -42,16 +44,16 @@ error_reporting(E_ALL);
 		<div class="col-lg-2 sidebar" id="left-sidebar"></div>
 		<div class="col-lg-8" id="main-panel">
   <div class="row book-info">
-	  <div class="col-sm-4" ><b>Title: <?php echo $book['title']; ?></b> </div>
-	  <div class="col-sm-4" ><b>Author: <?php echo $book['author']; ?></b> </div>
-	  <div class="col-sm-4" ><b>Publisher: <?php echo $book['publisher']; ?></b> </div>
+	  <div class="col-sm-4"><h4 class="inline-headers">Title: </h4><?php echo $book['title']; ?> </div>
+	  <div class="col-sm-4"><h4 class="inline-headers">Author: </h4><?php echo $book['author']; ?> </div>
+	  <div class="col-sm-4"><h4 class="inline-headers">Publisher: </h4><?php echo $book['publisher']; ?> </div>
 	  
-	  <div class="col-sm-4"  ><b>Genre: <?php echo $book['genre']; ?></b> </div>
-	  <div class="col-sm-4"  ><b>Date of Publication: <?php echo $book['pubDate']; ?></b> </div>
-	  <div class="col-sm-4"  ><b>ISBN: <?php echo $isbn; ?></b> </div>
+	  <div class="col-sm-4"><h4 class="inline-headers">Genre: </h4><?php echo $book['genre']; ?> </div>
+	  <div class="col-sm-4"><h4 class="inline-headers">Date of Publication: </h4><?php echo $book['pubDate']; ?> </div>
+	  <div class="col-sm-4"><h4 class="inline-headers">ISBN: </h4><?php echo $isbn; ?> </div>
 	  
 	  <div class="col-sm-12 text-center" id = "emptyRow" "></div>
-	  <div class="col-sm-12 text-center"  ><b>Synopsis:</b> 
+	  <div class="col-sm-12 text-center"><h4 class="inline-headers">Synopsis:</h4>
 	  <?php echo $book['synopsis']; ?>
   </div>
   </div>
@@ -59,7 +61,7 @@ error_reporting(E_ALL);
           <div class="col-sm-12 text-center book-info" id = "emptyRow" "></div>
    
   <div class="col-lg-12" style="text-align:center">       
-  	<button type="button" class="btn btn-primary">Rent Book</button>
+  	<button id="rent-button" class="btn btn-primary">Rent Book</button>
   </div>
     <div class="col-sm-4"> </div>
   <div class="col-lg-12">
@@ -70,16 +72,18 @@ error_reporting(E_ALL);
 	  	<div class="form-group">
 		  <label for="user-review">Write Your Own Review:</label>
 		  <textarea class="form-control" rows="10" id="user-review"></textarea>
-		  <button class="btn btn-primary">Submit</button>
+		  <button class="btn btn-primary" id="review-submit">Submit</button>
 		</div>
+		<div id="reviews-container" class="col-lg-12">
 	  	<?php
 	  		for($i = 0; $i < count($reviews); $i++) {
-	  			echo "<div class='col-lg-6 review-text' style='text-align:left'><h4 class='review-headers'>User: </h4>".$reviews[$i]['username']."</div>";
-	  			echo "<div class='col-lg-6 review-text' style='text-align:right'><h4 class='review-headers'>Date Posted: </h4>".$reviews[$i]['datePosted']."</div>";
+	  			echo "<div class='col-lg-6 review-text left'><h4 class='inline-headers'>User: </h4>".$reviews[$i]['username']."</div>";
+	  			echo "<div class='col-lg-6 review-text right'><h4 class='inline-headers'>Date Posted: </h4>".$reviews[$i]['datePosted']."</div>";
 	  			echo "<div class='col-lg-12'>".$reviews[$i]['contents']."</div>";
 	  			echo "<div class='col-lg-12 review-spacer'></div>";
 	  		}
 	  	?>
+	  	</div>
 	  </div>
 	</div>
 
@@ -90,4 +94,28 @@ error_reporting(E_ALL);
 		</div>
 	</div>
 	</body>
+	<script>
+		var isbn = '<?php echo $isbn; ?>';
+		$('#rent-button').click(function() {
+			console.log(isbn);
+		});
+		$('#review-submit').click(function() {
+			var contents = $('#user-review').val();			
+			var today = new Date();
+			var year = today.getFullYear();
+			//the weird looking code with slice below adds 0 before number if it's single digit
+			var day = ('0' + today.getDay()).slice(-2);
+			var month = ('0' + (today.getMonth()+1)).slice(-2);
+			today = year + '-' + month + '-' + day;
+			$.ajax({
+				type: 'post',
+				url: 'scripts/addReview.php',
+				data: {'isbn': isbn, 'contents': contents},
+				success: function(data) {
+					$('#user-review').val('');
+					$('#reviews-container').prepend('<div class="col-lg-6 review-text left"><h4 class="inline-headers">User: </h4>'+$_SESSION['username']+'</div><div class="col-lg-6 review-text right"><h4 class="inline-headers">Date Posted: </h4>'+today+'</div><div class="col-lg-12">'+contents+'</div><div class="col-lg-12 review-spacer"></div>');
+				}
+			})
+		});
+	</script>
 </html>
