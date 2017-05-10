@@ -4,6 +4,7 @@
 	error_reporting(E_ALL);
 	require("connect.php"); 
 	$userName = $_POST['userName'];
+	session_start();
 	$_SESSION['username'] = $username;
 	if(isset($_POST['pass'])) $pass = $_POST['pass'];
 	else $pass = '';
