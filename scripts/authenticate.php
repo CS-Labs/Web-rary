@@ -1,7 +1,4 @@
 <?php 
-	// ini_set('display_errors', 1);
-	// ini_set('display_startup_errors', 1);
-	// error_reporting(E_ALL);
 	require("connect.php"); 
 	if(isset($_POST['userName'])) $user = $_POST['userName'];
 	else $user = '';
@@ -13,6 +10,7 @@
 		$userNameCheck = "SELECT id FROM Users WHERE userName = '" . $user . "';";
 
 		$results = array();
+
 
 		$result = $conn->query($userNameCheck);
 
@@ -34,6 +32,15 @@
 			$passResult = $result->fetchColumn();
 		}
 
+		if($passResult != "" && $userNameResult != "")
+		{
+			$getUserIdQuery = "SELECT id FROM (SELECT id as userId FROM Users WHERE username = '" . $user . "') as a1 NATURAL JOIN UserSub, Subs WHERE password = '" . $pass . "' AND subscriptionId = id;";
+
+			$result = $conn->query($getUserIdQuery);
+
+			$_SESSION['userIdNum'] = $result->fetchColumn();
+
+		}
 
 		array_push($results, $passResult);
 
