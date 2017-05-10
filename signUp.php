@@ -63,6 +63,7 @@
 							<option value="2021">2021</option>
 							<option value="2022">2022</option>
 							<option value="2023">2023</option>
+						</select>
 					<label for="billing">Billing Address</label>
 					<input type="text" class="form-control" name="billing" id="billing" placeHolder="Billing Address">
 					<label for="shipping">Shipping Address</label>
@@ -70,6 +71,7 @@
 					<button id="sign-up" style="float:right; margin-top:35px" class="btn btn-primary">Sign Up</button>
 				</div>
 			</div>
+		</div>
 		</div>
 		<div class="col-lg-2 sidebar" id="right-sidebar">
 		
@@ -85,11 +87,10 @@
 		var exp = $('#year').val() + '-' + $('#month').val() + '1';
 		var billing = $('#billing').val();
 		var shipping = $('#shipping').val();
-
 		$.ajax({
 			type: 'post',
 			url: 'scripts/addUser.php',
-			data: {'username': username, 'password': password, 'cardType': cardType, 'name': name, 'ccNumber': ccNumber, 'exp': exp, 'billing', billing, 'shipping', shipping},
+			data: {'username': username, 'password': password, 'cardType': cardType, 'name': name, 'ccNumber': ccNumber, 'exp': exp, 'billing': billing, 'shipping': shipping},
 			success: function(data) {
 				console.log(data);
 			}
