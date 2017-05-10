@@ -28,7 +28,7 @@ if(isset($_GET['search-select'])) $searchSelect = $_GET['search-select'];
 		<p>Billing Address: </p>
 		<p>Shipping Address: </p>
 		<div class="col-md-12 text-center">
-			<button type="button" class="col-sm-12 col-centered btn btn-primary">Edit Payment Info</button>
+			<button type="button" class="btn btn-primary">Edit Payment Info</button>
 		</div>
 		<div class="col-sm-12 text-center" id = "emptyRow" "></div>
 		<hr style="width: 95%; color: black; height: 2px; background-color:blue;" />	
@@ -36,7 +36,7 @@ if(isset($_GET['search-select'])) $searchSelect = $_GET['search-select'];
 		<p>Username: </p>
 		<p>Password: </p>
 		<div class="col-md-12 text-center">
-			<button type="button" class="col-sm-12 col-centered btn btn-primary">Edit Account Info</button>
+			<button type="button" class="btn btn-primary">Edit Account Info</button>
 		</div>
 		<div class="col-sm-12 text-center" id = "emptyRow" "></div>
 		<hr style="width: 95%; color: black; height: 2px; background-color:blue;" />	
@@ -44,6 +44,11 @@ if(isset($_GET['search-select'])) $searchSelect = $_GET['search-select'];
 		<p>Subscription Status:
 			<p>Start Date: </p>
 			<p>Expiration Date: </p>
+					<div class="col-md-12 text-center">
+			<button type="button" class="btn btn-danger">Cancel Subscription</button>
+			<button type="button" class="btn btn-danger">Erase All User Info</button>
+		</div>
+
 			<div class="col-sm-12 text-center" id = "emptyRow" "></div>
 			<hr style="width: 95%; color: black; height: 2px; background-color:blue;" />	
 			<h2 align="center"> Rental History </h2>

@@ -9,26 +9,26 @@
   <script src="js/app.js"></script>
 </head>
 <body bgcolor=white>
-   <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <?php
-        session_start();
-        if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] == 0){
-           echo '<li id = "accountInfoBtn" style="display:none;"><a href="accountInfo.php">Account-Info</a></li>';
-           echo '<li><a href="signUp.php">Sign-Up</a></li>';
-           echo '<li id = "LoginBtn"><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>';
-        }
-        else
-        {
-           echo '<li id = "accountInfoBtn" ><a href="accountInfo.php">Account-Info</a></li>';
-           echo '<li><a href="signUp.php">Sign-Up</a></li>';
-           echo '<li id = "LoginBtn"><a data-toggle="modal" data-target="#myLoginModal" href="#">Logout</a></li>';
-        }?>
-    </ul>
+ <div class="collapse navbar-collapse" id="myNavbar">
+  <ul class="nav navbar-nav navbar-right">
+    <?php
+    session_start();
+    if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] == 0){
+     echo '<li id = "accountInfoBtn" style="display:none;"><a href="accountInfo.php">Account-Info</a></li>';
+     echo '<li><a href="signUp.php">Sign-Up</a></li>';
+     echo '<li id = "LoginBtn"><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>';
+ }
+ else
+ {
+     echo '<li id = "accountInfoBtn" ><a href="accountInfo.php">Account-Info</a></li>';
+     echo '<li><a href="signUp.php">Sign-Up</a></li>';
+     echo '<li id = "LoginBtn"><a data-toggle="modal" data-target="#logOutMessageModal" href="#">Logout</a></li>';
+ }?>
+</ul>
 </div>
 
 <div class="jumbotron" style="margin-bottom: 0!important" id="header">
- <h1 id="title">Web-rary<span style="display:inline-block;">Like a regular library, but online...and not free</span></h1>
+   <h1 id="title">Web-rary<span style="display:inline-block;">Like a regular library, but online...and not free</span></h1>
 </div>
 <div class="col-lg-12" style="height:30px;background-color:#bbb"></div>
 <div class="col-lg-2 sidebar" id="left-sidebar"></div>
@@ -50,11 +50,11 @@
     </div>
     <div class="col-lg-6 book-info" ><h3>Top Ten Most Popular Authors</h3>
         <ul id="author-list">
-         <?php 
-         $mostPopAuthQuery = "SELECT name FROM (SELECT *, COUNT(dateRented) as cnt FROM (SELECT * FROM Authors, WrittenBy WHERE id = authorID) as a1 NATURAL JOIN Rent GROUP BY (name) ORDER BY cnt DESC LIMIT 10) as a2;";
+           <?php 
+           $mostPopAuthQuery = "SELECT name FROM (SELECT *, COUNT(dateRented) as cnt FROM (SELECT * FROM Authors, WrittenBy WHERE id = authorID) as a1 NATURAL JOIN Rent GROUP BY (name) ORDER BY cnt DESC LIMIT 10) as a2;";
 
-         $result = $conn->query($mostPopAuthQuery);
-         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+           $result = $conn->query($mostPopAuthQuery);
+           while($row = $result->fetch(PDO::FETCH_ASSOC)) {
             echo "<li><a href='searchResults.php?search-select=author&search-box=".$row['name']."'>".$row["name"] . "</a></li>";
         }
         ?>
@@ -63,27 +63,27 @@
 </div>
 <div class="col-lg-6 book-info" ><h3>List of Genres Offered</h3>
     <ul>
-       <?php 
-       $getGenresQuery = "SELECT DISTINCT genre FROM Books;";   
-       $result = $conn->query($getGenresQuery);
-       while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-          echo  "<li><a href='searchResults.php?search-select=genre&search-box=".$row['genre']."'>".$row["genre"]  . "</a></li>";
-      }
-      ?>
-  </ul>
+     <?php 
+     $getGenresQuery = "SELECT DISTINCT genre FROM Books;";   
+     $result = $conn->query($getGenresQuery);
+     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+      echo  "<li><a href='searchResults.php?search-select=genre&search-box=".$row['genre']."'>".$row["genre"]  . "</a></li>";
+  }
+  ?>
+</ul>
 </div>
 </div>
 <div class="col-lg-2 sidebar" id="right-sidebar">
   <form method="get" action="searchResults.php">
-     <label for="search-select" style="margin-top:15px">Search By:</label> 
-     <select name="search-select" id="search-select" class="form-control">
-        <option value="title">Title</option>
-        <option value="author">Author</option>
-        <option value="isbn">ISBN</option>
-        <option value="genre">genre</option>
-    </select>
-    <input type="text" class="form-control" name="search-box" id="search-box">
-    <button type="submit" class="btn" id="search-button">Search</button>
+   <label for="search-select" style="margin-top:15px">Search By:</label> 
+   <select name="search-select" id="search-select" class="form-control">
+    <option value="title">Title</option>
+    <option value="author">Author</option>
+    <option value="isbn">ISBN</option>
+    <option value="genre">genre</option>
+</select>
+<input type="text" class="form-control" name="search-box" id="search-box">
+<button type="submit" class="btn" id="search-button">Search</button>
 </form>
 </div>
 
@@ -100,8 +100,10 @@
     <div class="modal-body">
         <p>Have a nice day!</p>
     </div>
+<div class="modal-footer">
+    <button  id = 'confirmLogOut' type="button" class="btn btn-default" data-dismiss="modal">Okay</button>
+    </div>
 </div>
-
 </div>
 </div>
 
@@ -146,52 +148,53 @@
 </body>
 <script>
 
-  $(function(){
-      $('#logOutMessageModal').on('show.bs.modal', function(){
-          var myModal = $(this);
-          clearTimeout(myModal.data('hideInterval'));
-          myModal.data('hideInterval', setTimeout(function(){
-              myModal.modal('hide');
-          }, 2000));
-      $('#LoginBtn a').text('Login');
-      $('#LoginBtn a').attr('data-target','#myLoginModal');
-      $('#accountInfoBtn').attr('style', 'display:none;');
-      });
-  });
+  $(document).on('click', '#confirmLogOut', function(e) {
+    $.ajax({
+        type: 'post',
+        url: 'scripts/endSession.php',
+        data: {},
+
+        success: function (data) {}
+
+    })
+    $('#LoginBtn a').text('Login');
+    $('#LoginBtn a').attr('data-target','#myLoginModal');
+    $('#accountInfoBtn').attr('style', 'display:none;');
+});
 
   $(document).on('click', '#log-in', function(e) {
-   $('#LoginBtn a').text('Login');
-   e.preventDefault();
-   $('#error-info').empty();
-   var userName = $('#myUserName').val();
-   var pass = $('#myPassword').val();
-   $.ajax({
-    type: 'post',
-    url: 'scripts/authenticate.php',
-    data: {'userName': userName, 'pass': pass},
+     $('#LoginBtn a').text('Login');
+     e.preventDefault();
+     $('#error-info').empty();
+     var userName = $('#myUserName').val();
+     var pass = $('#myPassword').val();
+     $.ajax({
+        type: 'post',
+        url: 'scripts/authenticate.php',
+        data: {'userName': userName, 'pass': pass},
 
-    success: function(data) {
-      var authData = JSON.parse(data);
-      if(authData[0] == "")
-      {
-        $('#error-info').append("<font color='red'><b>INVALID USERNAME</b></font>");
-    }
-    else if (authData[1] == "")
-    {
-        $('#error-info').append("<font color='red'><b>INVALID PASSWORD</b></font>");
-    }
-    else
-    {
-     <?php $_SESSION['loggedIn'] = 1 ?>
-     $('#LoginBtn a').text('Logout');
-     $('#LoginBtn a').attr('data-target','#logOutMessageModal');
-     $('#myLoginModal').modal('hide');
-     $('#accountInfoBtn').attr('style', '');
- }
-}
+        success: function(data) {
+          var authData = JSON.parse(data);
+          if(authData[0] == "")
+          {
+            $('#error-info').append("<font color='red'><b>INVALID USERNAME</b></font>");
+        }
+        else if (authData[1] == "")
+        {
+            $('#error-info').append("<font color='red'><b>INVALID PASSWORD</b></font>");
+        }
+        else
+        {
+           <?php $_SESSION['loggedIn'] = 1 ?>
+           $('#LoginBtn a').text('Logout');
+           $('#LoginBtn a').attr('data-target','#logOutMessageModal');
+           $('#myLoginModal').modal('hide');
+           $('#accountInfoBtn').attr('style', '');
+       }
+   }
 
 })
-});
+ });
 </script>
 
 </html>
