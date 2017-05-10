@@ -1,10 +1,9 @@
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
 	session_start();
 	require('scripts/connect.php');
-	// require('scripts/authenticate.php');
 	if(isset($_GET['isbn'])) $isbn = $_GET['isbn'];
 	else $isbn = '';
 
@@ -33,7 +32,7 @@ error_reporting(E_ALL);
 	<body bgcolor=white>
 	<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="nav navbar-nav navbar-right">
-			<li><a data-toggle="modal" data-target="#mySignUpModal" href="#">Sign-Up</a></li>
+			<li><a data-toggle="modal" data-target="#mySignUpModal" href="signUp.php">Sign-Up</a></li>
 			<li><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>
 		</ul>
 	</div>
@@ -91,6 +90,17 @@ error_reporting(E_ALL);
 
     </div>
 		<div class="col-lg-2 sidebar" id="right-sidebar">
+			<form method="get" action="searchResults.php">
+		        <label for="search-select" style="margin-top:15px">Search By:</label> 
+		        <select name="search-select" id="search-select" class="form-control">
+		            <option value="title">Title</option>
+		            <option value="author">Author</option>
+		            <option value="isbn">ISBN</option>
+		            <option value="genre">genre</option>
+		        </select>
+		        <input type="text" class="form-control" name="search-box" id="search-box">
+		        <button type="submit" class="btn" id="search-button">Search</button>
+    		</form>
 		</div>
 	</div>
 	</body>

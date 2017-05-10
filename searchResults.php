@@ -59,8 +59,18 @@
 			
 		</div>
 		<div class="col-lg-2 sidebar" id="right-sidebar">
-
-		  </div>
+			<form method="get" action="searchResults.php">
+		        <label for="search-select" style="margin-top:15px">Search By:</label> 
+		        <select name="search-select" id="search-select" class="form-control">
+		            <option value="title">Title</option>
+		            <option value="author">Author</option>
+		            <option value="isbn">ISBN</option>
+		            <option value="genre">genre</option>
+		        </select>
+		        <input type="text" class="form-control" name="search-box" id="search-box">
+		        <button type="submit" class="btn" id="search-button">Search</button>
+    		</form>
+		</div>
 
 	</body>
 
