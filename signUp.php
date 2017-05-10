@@ -2,22 +2,10 @@
 	require("scripts/connect.php");
 ?>
 
-<html>
-	<head>
-		<title>Webrary</title>
-		<link rel="stylesheet" type="text/css" href="css/index.css"/>
-		<link rel="stylesheet" type="text/css" href="css/signup.css"/>
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-		<script src="js/jquery-1.12.4.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/app.js"></script>
-	</head>
-	<body bgcolor=white>
-		<div class="jumbotron" id="header">
-			<h1 id="title">Web-rary<span style="display:inline-block;">Like a regular library, but online...and not free</span></h1>
-		</div>
-		<div class="col-lg-2 sidebar" id="left-sidebar"></div>
-		<div class="col-lg-8" id="main-panel">
+
+	<?php include("shared/pageStart.html"); ?>
+
+
 			<div class="col-lg-1"></div>
 			<div class="col-lg-6" id="sign-up-form" style="padding-top:20px">
 				<h1>Enter Your Information</h1>
@@ -74,7 +62,10 @@
 		</div>
 		</div>
 		<div class="col-lg-2 sidebar" id="right-sidebar">
-		
+	
+	<?php include("shared/modalsComm.html"); ?>
+
+
 	</body>
 	<script>
 	$('#sign-up').click(function() {
@@ -96,5 +87,64 @@
 			}
 		});
 	});
+
+
+		
+  $(document).on('click', '#confirmLogOut', function(e) {
+    $.ajax({
+        type: 'post',
+        url: 'scripts/setLoggedOut.php',
+        data: {},
+
+        success: function (data) {}
+
+    })
+
+    $('#LoginBtn a').text('Login');
+    $('#LoginBtn a').attr('data-target','#myLoginModal');
+    $('#accountInfoBtn').attr('style', 'display:none;');
+});
+
+  $(document).on('click', '#log-in', function(e) {
+     $('#LoginBtn a').text('Login');
+     e.preventDefault();
+     $('#error-info').empty();
+     var userName = $('#myUserName').val();
+     var pass = $('#myPassword').val();
+     $.ajax({
+        type: 'post',
+        url: 'scripts/authenticate.php',
+        data: {'userName': userName, 'pass': pass},
+
+        success: function(data) {
+          var authData = JSON.parse(data);
+          if(authData[0] == "")
+          {
+            $('#error-info').append("<font color='red'><b>INVALID USERNAME</b></font>");
+        }
+        else if (authData[1] == "")
+        {
+            $('#error-info').append("<font color='red'><b>INVALID PASSWORD</b></font>");
+        }
+        else
+        {
+            $.ajax({
+                type: 'post',
+                url: 'scripts/setLoggedIn.php',
+                data: {},
+
+                success: function (data) {}
+
+            })
+
+           $('#LoginBtn a').text('Logout');
+           $('#LoginBtn a').attr('data-target','#logOutMessageModal');
+           $('#myLoginModal').modal('hide');
+           $('#accountInfoBtn').attr('style', '');
+       }
+   }
+
+})
+ });
 	</script>
 </html>

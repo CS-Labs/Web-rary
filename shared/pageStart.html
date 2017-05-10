@@ -1,22 +1,35 @@
 <html>
-	<head>
-		<title>Webrary</title>
-		<link rel="stylesheet" type="text/css" href="css/index.css"/>
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-		<script src="js/jquery-1.12.4.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/app.js"></script>
-	</head>
-	<body bgcolor=white>
-	<div class="collapse navbar-collapse" id="myNavbar">
-		<ul class="nav navbar-nav navbar-right">
-			<li><a data-toggle="modal" data-target="#mySignUpModal" href="#">Sign-Up</a></li>
-			<li><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>
-		</ul>
-	</div>
-	
-		<div class="jumbotron" id="header">
-			<h1 id="title">Web-rary<span style="display:inline-block;">Like a regular library, but online...and not free</span></h1>
-		</div>
-		<div class="col-lg-2 sidebar" id="left-sidebar"></div>
-		<div class="col-lg-8" id="main-panel">
+<head>
+    <title>Webrary</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body bgcolor=white>
+    <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+            <?php
+            session_start();
+            if(!isset($_SESSION['loggedIn'])){$_SESSION['loggedIn'] = 0;}
+            if($_SESSION['loggedIn'] == 0){
+            echo '<li id = "accountInfoBtn" style="display:none;"><a href="accountInfo.php">Account-Info</a></li>';
+            echo '<li><a href="signUp.php">Sign-Up</a></li>';
+            echo '<li id = "LoginBtn"><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>';
+        }
+        else
+        {
+        echo '<li id = "accountInfoBtn" ><a href="accountInfo.php">Account-Info</a></li>';
+        echo '<li><a href="signUp.php">Sign-Up</a></li>';
+        echo '<li id = "LoginBtn"><a data-toggle="modal" data-target="#logOutMessageModal" href="#">Logout</a></li>';
+    }?>
+</ul>
+</div>
+
+<div class="jumbotron" style="margin-bottom: 0!important" id="header">
+    <h1 id="title">Web-rary<span style="display:inline-block;">Like a regular library, but online...and not free</span></h1>
+</div>
+<div class="col-lg-12" style="height:30px;background-color:#bbb"></div>
+<div class="col-lg-2 sidebar" id="left-sidebar"></div>
+<div class="col-lg-8" id="main-panel">

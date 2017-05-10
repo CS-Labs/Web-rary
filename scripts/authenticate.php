@@ -34,10 +34,6 @@
 			$passResult = $result->fetchColumn();
 		}
 
-		// if($passResult != "" && $userNameResult != "")
-		// {
-		// 	$_SESSION['loggedIn'] = 1;
-		// }
 
 		array_push($results, $passResult);
 
