@@ -11,9 +11,19 @@
 <body bgcolor=white>
    <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li id = 'accountInfoBtn' style="display:none;"><a href="accountInfo.php">Account-Info</a></li>
-        <li><a href="signUp.php">Sign-Up</a></li>
-        <li id = 'LoginBtn'><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>
+        <?php
+        session_start();
+        if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] == 0){
+           echo '<li id = "accountInfoBtn" style="display:none;"><a href="accountInfo.php">Account-Info</a></li>';
+           echo '<li><a href="signUp.php">Sign-Up</a></li>';
+           echo '<li id = "LoginBtn"><a data-toggle="modal" data-target="#myLoginModal" href="#">Login</a></li>';
+        }
+        else
+        {
+           echo '<li id = "accountInfoBtn" ><a href="accountInfo.php">Account-Info</a></li>';
+           echo '<li><a href="signUp.php">Sign-Up</a></li>';
+           echo '<li id = "LoginBtn"><a data-toggle="modal" data-target="#myLoginModal" href="#">Logout</a></li>';
+        }?>
     </ul>
 </div>
 
@@ -26,22 +36,23 @@
     <div class="col-lg-12 pop-genre">
         <h3> Current Most Popular Genre:          
             <?php 
+            session_start();
             require("scripts/connect.php");
             $mostPopGenreQuery = "SELECT genre FROM (SELECT genre, COUNT(genre) cnt FROM Books GROUP BY genre HAVING cnt = (SELECT MAX(cnt) FROM (SELECT COUNT(genre) as cnt FROM Books GROUP By genre) as a1))as a2;";
-            
+
             $result = $conn->query($mostPopGenreQuery);
             while($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 echo  "<a href='searchResults.php?search-select=genre&search-box=".$row["genre"]."'>".$row["genre"]."</a>";
             }
             ?>
-            
+
         </h3>
     </div>
     <div class="col-lg-6 book-info" ><h3>Top Ten Most Popular Authors</h3>
         <ul id="author-list">
          <?php 
          $mostPopAuthQuery = "SELECT name FROM (SELECT *, COUNT(dateRented) as cnt FROM (SELECT * FROM Authors, WrittenBy WHERE id = authorID) as a1 NATURAL JOIN Rent GROUP BY (name) ORDER BY cnt DESC LIMIT 10) as a2;";
-         
+
          $result = $conn->query($mostPopAuthQuery);
          while($row = $result->fetch(PDO::FETCH_ASSOC)) {
             echo "<li><a href='searchResults.php?search-select=author&search-box=".$row['name']."'>".$row["name"] . "</a></li>";
@@ -79,7 +90,7 @@
 <!-- Modal -->
 <div class="modal fade" id="logOutMessageModal" role="dialog">
   <div class="modal-dialog">
-      
+
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
@@ -97,7 +108,7 @@
 <!-- Modal -->
 <div class="modal fade" id="myLoginModal" role="dialog">
     <div class="modal-dialog">
-        
+
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -107,7 +118,7 @@
 
       <!-- Modal Body -->
       <div class="modal-body">
-        
+
         <form role="form">
           <div class="form-group">
             <label for="myUserName">Username</label>
@@ -116,13 +127,12 @@
         </div>
         <div class="form-group">
             <label for="myPassword">Password</label>
-            <input type="password" class="form-control"
-            id="myPassword" placeholder="Password"/>
+            <input type="password" class="form-control" id="myPassword" placeholder="Password"/>
         </div>
         <button id="log-in" class="btn btn-default">Log-In</button>
     </form>
-    
-    
+
+
 </div>
 <div class="modal-footer">
     <div id = 'error-info'></div>
@@ -135,20 +145,6 @@
 
 </body>
 <script>
-  var loggedIn; //Global.
-  $(document).ready(function(){
-    loggedIn = false;
-})
-
-  $(document).on('click', '#LoginBtn', function (e) {
-    if(loggedIn)
-    {
-      loggedIn = false;
-      $('#LoginBtn a').text('Login');
-      $('#LoginBtn a').attr('data-target','#myLoginModal');
-      $('#accountInfoBtn').attr('style', 'display:none;');
-  }
-})
 
   $(function(){
       $('#logOutMessageModal').on('show.bs.modal', function(){
@@ -157,6 +153,9 @@
           myModal.data('hideInterval', setTimeout(function(){
               myModal.modal('hide');
           }, 2000));
+      $('#LoginBtn a').text('Login');
+      $('#LoginBtn a').attr('data-target','#myLoginModal');
+      $('#accountInfoBtn').attr('style', 'display:none;');
       });
   });
 
@@ -183,7 +182,7 @@
     }
     else
     {
-     loggedIn = true;
+     <?php $_SESSION['loggedIn'] = 1 ?>
      $('#LoginBtn a').text('Logout');
      $('#LoginBtn a').attr('data-target','#logOutMessageModal');
      $('#myLoginModal').modal('hide');
