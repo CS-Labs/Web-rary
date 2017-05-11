@@ -1,4 +1,3 @@
-
 <?php include("shared/pageStart.html"); ?>
     <div class="col-lg-12 pop-genre">
         <h3> Current Most Popular Genre:          
@@ -26,24 +25,20 @@
         ?>
     </ul>
 
-</h3>
 </div>
-
 <div class="col-lg-6 book-info" ><h3>List of Genres Offered</h3>
     <ul>
      <?php 
      $getGenresQuery = "SELECT DISTINCT genre FROM Books;";   
      $result = $conn->query($getGenresQuery);
      while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-
       echo  "<li><a href='searchResults.php?search-select=genre&search-box=".$row['genre']."'>".$row["genre"]  . "</a></li>";
-    }
-    ?>
+  }
+  ?>
 </ul>
 </div>
 </div>
 <div class="col-lg-2 sidebar" id="right-sidebar">
-
   <form method="get" action="searchResults.php">
    <label for="search-select" style="margin-top:15px">Search By:</label> 
    <select name="search-select" id="search-select" class="form-control">
@@ -62,7 +57,6 @@
 
 
 </body>
-
 <script>
 
   $(document).on('click', '#confirmLogOut', function(e) {
@@ -72,7 +66,6 @@
         data: {},
 
         success: function (data) {}
-
 
     })
 
@@ -93,6 +86,7 @@
         data: {'userName': userName, 'pass': pass},
 
         success: function(data) {
+          console.log(data);
           var authData = JSON.parse(data);
           if(authData[0] == "")
           {
@@ -102,9 +96,12 @@
         {
             $('#error-info').append("<font color='red'><b>INVALID PASSWORD</b></font>");
         }
+        else if (authData[2] != "Active")
+        {
+            $('#error-info').append("<font color='red'><b>ACCOUNT IS INACTIVE</b></font>");
+        }
         else
         {
-
             $.ajax({
                 type: 'post',
                 url: 'scripts/setLoggedIn.php',

@@ -71,7 +71,7 @@
 	$('#sign-up').click(function() {
 		console.log("Signing Up");
 		var username = $('#username').val();
-		var pass = $('#pass').val();
+		var password = $('#password').val();
 		var cardType = $('#card-type').val();
 		var name = $('#name-on-card').val();
 		var ccNumber = $('#cc-number').val();
@@ -81,7 +81,7 @@
 		$.ajax({
 			type: 'post',
 			url: 'scripts/addUser.php',
-			data: {'username': username, 'pass': pass, 'cardType': cardType, 'name': name, 'ccNumber': ccNumber, 'exp': exp, 'billing': billing, 'shipping': shipping},
+			data: {'username': username, 'password': password, 'cardType': cardType, 'name': name, 'ccNumber': ccNumber, 'exp': exp, 'billing': billing, 'shipping': shipping},
 			success: function(data) {
 				console.log(data);
 			}

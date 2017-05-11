@@ -1,6 +1,6 @@
 <?php 
 	$user = $_POST['username'];
-	$pass = $_POST['pass'];
+	$password = $_POST['password'];
 	$cardType = $_POST['cardType'];
 	$name = $_POST['name'];
 	$ccNumber = $_POST['ccNumber'];
@@ -15,7 +15,7 @@
 		$query->execute();
 		$userID = $conn->lastInsertID();
 		$query = $conn->prepare("insert into Subs(password, startDate, expDate, status, shippingAddress) values(?, curdate(), curdate() + interval 1 month, 'Active', ?)");
-		$query->bindParam(1, $pass);
+		$query->bindParam(1, $password);
 		$query->bindParam(2, $shipping);
 		$query->execute();
 		$subID = $conn->lastInsertID();
@@ -35,8 +35,6 @@
 		$query->bindParam(5, $exp);
 		$query->execute();
 		$conn->commit();
-		session_start();
-		$_SESSION['loggedIn'] = 1;
 	}
 	catch(exception $e) {
 		echo "Error adding user: " . $e->getMessage();
