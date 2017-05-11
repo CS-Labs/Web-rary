@@ -38,5 +38,6 @@
 		echo "Error inserting review: " . $e->getMessage();
 		$conn->rollBack();
 	}
+	
 
 ?>

@@ -1,7 +1,7 @@
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
 	require('scripts/connect.php');
 	// require('scripts/authenticate.php');
 	if(isset($_GET['isbn'])) $isbn = $_GET['isbn'];
@@ -32,8 +32,8 @@ error_reporting(E_ALL);
 	  
 	  <div class="col-sm-12 text-center" id = "emptyRow" "></div>
 	  <div class="col-sm-12 text-center"><h4 class="inline-headers">Synopsis:</h4>
-	  <?php echo $book['synopsis']; ?>
-  </div>
+		  <?php echo $book['synopsis']; ?>
+	  </div>
   </div>
         <div class="row">
           <div class="col-sm-12 text-center book-info" id = "emptyRow" "></div>
@@ -73,13 +73,43 @@ error_reporting(E_ALL);
 	</div>
 
 	<?php include("shared/modalsComm.html"); ?>
+	<div class="modal fade" id="rentModal" role="dialog">
+	<div class="modal-dialog">
 
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body">
+				<p id="rent-message"></p>
+			</div>
+			<div class="modal-footer">
+			<form action="../DBProject">
+				<button  id = 'confirmLogOut' type="submit" class="btn btn-default" >Okay</button>
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
 
 	</body>
 	<script>
 		var isbn = '<?php echo $isbn; ?>';
 		$('#rent-button').click(function() {
-			console.log(isbn);
+			$.ajax({
+				type: 'post',
+				url: 'scripts/processRental.php',
+				data: {'isbn': isbn},
+				success: function(data) {
+					console.log(data);
+					$('#rent-message').text('');
+					$('#rent-message').text(data);
+					$('#rentModal').modal('show');
+
+				}
+			})
 		});
 		$('#review-submit').click(function() {
 			var contents = $('#user-review').val();			
@@ -96,7 +126,9 @@ error_reporting(E_ALL);
 				success: function(data) {
 					console.log(data);
 					$('#user-review').val('');
-					$('#reviews-container').prepend('<div class="col-lg-6 review-text left"><h4 class="inline-headers">User: </h4><?php echo $_SESSION['username']; ?></div><div class="col-lg-6 review-text right"><h4 class="inline-headers">Date Posted: </h4>'+today+'</div><div class="col-lg-12">'+contents+'</div><div class="col-lg-12 review-spacer"></div>');
+					if(<?php if(isset($_SESSION['username'])) echo 'true'; else echo 'false'; ?>) {
+						$('#reviews-container').prepend('<div class="col-lg-6 review-text left"><h4 class="inline-headers">User: </h4><?php echo $_SESSION['username']; ?></div><div class="col-lg-6 review-text right"><h4 class="inline-headers">Date Posted: </h4>'+today+'</div><div class="col-lg-12">'+contents+'</div><div class="col-lg-12 review-spacer"></div>');
+					}
 				}
 			})
 		});
