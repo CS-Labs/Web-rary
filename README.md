@@ -7,6 +7,16 @@ Created for CS464/564 Database class.
 **ER-Diagram:**
 ![ER-Diagram](https://github.com/CS-Labs/Web-rary/blob/master/ER_Diagram.PNG "ER-Diagram")
 
+**Creating an Account:**
+![Create-an-Account](https://github.com/CS-Labs/Web-rary/blob/master/signup-example.gif "Create-an-Account")
+
+**Renting a Book:**
+![Renting-a-Book](https://github.com/CS-Labs/Web-rary/blob/master/rent-book.gif "Renting-a-Book")
+
+**Leaving a Review and Returning a Book:**
+![Leaving-a-Review-and_Returning-a-Book](https://github.com/CS-Labs/Web-rary/blob/master/comment-and-return.gif "[Leaving-a-Review-and_Returning-a-Book")
+
+
     **Copyright (C) {2017}  {Christian Seely and John Clark} <cseely@unm.edu>**
 
     This program is free software: you can redistribute it and/or modify
