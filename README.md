@@ -2,8 +2,10 @@
 
 Created for CS464/564 Database class. 
 
-Authors: Christian Seely, John Clark
+**Authors: Christian Seely, John Clark**
 
+**ER-Diagram:**
+![ER-Diagram](https://github.com/CS-Labs/Web-rary/blob/master/ER_Diagram.PNG "ER-Diagram")
 
     **Copyright (C) {2017}  {Christian Seely and John Clark} <cseely@unm.edu>**
 
